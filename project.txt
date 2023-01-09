@@ -1,0 +1,63 @@
+import tkinter as tk
+import os 
+from pygame import *
+from tkinter.filedialog import askdirectory
+
+canvas = tk.Tk()
+canvas.title('music player')
+canvas.geometry("600x700")
+canvas.config(bg='hotpink') 
+
+l = tk.Label(canvas, text = "MUSIC PLAYER", padx = 30, pady = 15, bg="cyan")
+l.config(font =("Courier", 14,))
+l.pack()
+
+directory = askdirectory()
+os.chdir(directory)
+songlist = os.listdir()
+
+listBox = tk.Listbox(canvas, font ="arial", bg="gold",selectmode= tk.SINGLE , height=20)
+
+for item in songlist:
+    pos = 0
+    listBox.insert(pos, item)
+    pos = pos + 1
+
+listBox.pack(fill="both")    
+
+mixer.init()
+
+
+def select():
+    mixer.music.load(listBox.get(tk.ACTIVE)) 
+    var.set(listBox.get(tk.ACTIVE))
+    mixer.music.play()
+    
+def stop():
+    mixer.music.stop()  
+
+def pause():
+    mixer.music.pause()
+    
+def unpause():
+    mixer.music.unpause()
+
+top=tk.Frame(canvas, bg="gold")
+top.pack(padx = 30, pady = 15, anchor = 'center')
+
+playbutton=tk.Button(canvas, text="PLAY", command=select)
+playbutton.pack(padx = 30, pady = 20,  in_ = top, side = 'left')
+
+pausebutton=tk.Button(canvas, text="PAUSE", command=pause)
+pausebutton.pack(padx = 30, pady = 20,  in_ = top, side = 'left')
+
+unpausebutton=tk.Button(canvas, text="UNPAUSE", command=unpause)
+unpausebutton.pack(padx = 30, pady = 20,  in_ = top, side = 'left')
+
+stopbutton=tk.Button(canvas, text="STOP", command=stop)
+stopbutton.pack(padx = 30, pady = 20,  in_ = top, side = 'left')
+
+var = tk.StringVar()
+songtitle = tk.Label(canvas, font="arial", textvariable=var)
+
+canvas.mainloop()
